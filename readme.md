@@ -29,20 +29,7 @@ Multi-tab Output: Executive summary, chunk details, and raw JSON views
 Real-time Statistics: Token usage, chunk count, processing metrics
 Export Functionality: Save reports as text or JSON
 
-Architecture
-├── JSONSummarizer
-│   ├── preprocess_json()      # Analyzes JSON structure
-│   ├── chunk_hosts()           # Intelligent chunking strategy
-│   ├── _simplify_host_for_summary()  # Token optimization
-│   ├── generate_chunk_prompt() # Context-aware prompts
-│   ├── create_final_summary()  # Hierarchical summarization
-│   └── process_json()          # Main processing pipeline
-│
-└── JSONSummarizerGUI
-    ├── Control Panel           # File selection & strategy
-    ├── Output Tabs            # Multiple view formats
-    └── Statistics Display     # Processing metrics
-Installation
+
 Prerequisites
 
 Python 3.8 or higher
@@ -254,11 +241,3 @@ Large files (>1000 hosts) may require chunked API calls
 Token limits may require adjustment for very detailed vulnerability data
 GUI requires tkinter (included in most Python installations)
 
-Roadmap
-
- Add support for multiple file formats (CSV, XML)
- Implement caching for repeated analyses
- Add real-time streaming for large file processing
- Integrate with popular security scanning tools
- Add customizable report templates
- Implement parallel processing for chunks

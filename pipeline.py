@@ -1,6 +1,6 @@
 import json
 from turtle import dot
-from openai import api_key
+
 import tiktoken
 from typing import List, Dict, Any, Generator, Optional
 import hashlib
@@ -42,6 +42,10 @@ class JSONSummarizer:
                     for service in h.get('services', [])
                     )
                 ),
+            'hosts_with_threats': sum(1 for h in hosts if
+                                    h.get('threat_intelligence', {}).get('risk_level') in ['high', 'critical']
+                                    or h.get('threat_intelligence', {}).get('malware_families')
+                                    or any(service.get('malware_detected') for service in h.get('services', []))),
             'unique_locations': len(set(h.get('location', {}).get('country', 'unknown')for h in hosts))
         }
         
@@ -340,18 +344,17 @@ class JSONSummarizer:
     def call_gpt_api(self, prompt: str) -> str:
         from openai import OpenAI
         load_dotenv(dotenv_path="env/.env")
-        print(os.getenv("OPENAI_API_KEY"))
         client = OpenAI()
         
         
-        response = client.responses.create(
+        response = client.chat.completions.create(
             model=self.model,
-            reasoning={'effort': 'medium'},
-            input= [{
-                'role': 'developer',
-                'content': prompt
-            }]
+            messages=[
+                {'role': 'user', 'content': prompt}
+            ],
+            temperature=0.3,
+            max_tokens=1000
         )
         
-        return response
+        return response.choices[0].message.content
         
