@@ -36,12 +36,13 @@ Python 3.8 or higher
 OpenAI API key (for GPT integration)
 
 Install Dependencies
-bash conda env create -f environment.yml
+```bash conda env create -f environment.yml```
 For GUI support:
-bashpip install tkinter  # Usually comes with Python
+```bash pip install tkinter  # Usually comes with Python```
 Clone Repository
-bashgit clone https://github.com/yourusername/security-json-summarizer.git
+```bash git clone https://github.com/yourusername/security-json-summarizer.git
 cd security-json-summarizer
+```
 Usage
 CLI Usage
 pythonfrom json_summarizer import JSONSummarizer, HostSummaryConfig
@@ -61,11 +62,13 @@ summarizer = JSONSummarizer(model="gpt-5", config=config)
 result = summarizer.process_json("path/to/security_scan.json")
 
 # Access results
+```python
 print(result['executive_summary'])
 print(f"Processed {result['statistics']['total_hosts']} hosts")
 print(f"Created {result['statistics']['chunks_created']} chunks")
+```
 GUI Usage
-bashpython gui_summarizer.py
+```bash python gui_summarizer.py```
 
 Click Browse to select your JSON file
 Choose processing strategy from dropdown
@@ -81,7 +84,7 @@ Click Export Summary to save results
 
 Input Format
 The tool expects JSON files with the following structure:
-json{
+```json{
   "metadata": {
     "description": "Security scan data",
     "created_at": "2025-01-12",
@@ -124,9 +127,10 @@ json{
     }
   ]
 }
+```
 📊 Output Format
 The tool generates a comprehensive report containing:
-json{
+```json{
   "executive_summary": "Security analysis summary...",
   "metadata": {...},
   "chunk_details": [
@@ -147,7 +151,8 @@ json{
     }
   }
 }
-⚙️ Configuration
+```
+Configuration
 HostSummaryConfig Options
 ParameterTypeDefaultDescriptionprioritize_vulnsboolTrueGroup hosts by vulnerability severitygroup_by_asnboolFalseGroup hosts by Autonomous System Numbermax_hosts_per_chunkint50Maximum hosts per processing chunkmax_tokens_per_chunkint3000Token limit per chunk
 Processing Strategies
@@ -178,7 +183,7 @@ OpenAI Configuration
 Get your API key from OpenAI Platform
 Add to your code:
 
-pythondef call_gpt_api(self, prompt: str) -> str:
+```python def call_gpt_api(self, prompt: str) -> str:
     import openai
     openai.api_key = "your-api-key-here"  # Use environment variable in production
     
@@ -189,10 +194,10 @@ pythondef call_gpt_api(self, prompt: str) -> str:
         max_tokens=500
     )
     return response.choices[0].message.content
-
+```
 Or use environment variable:
 
-bashexport OPENAI_API_KEY="your-api-key-here"
+```bash export OPENAI_API_KEY="your-api-key-here" ```
 Examples
 Example 1: Analyzing Critical Infrastructure
 python# Focus on critical vulnerabilities
@@ -204,12 +209,12 @@ config = HostSummaryConfig(
 summarizer = JSONSummarizer(config=config)
 result = summarizer.process_json("critical_infrastructure.json")
 Example 2: Network-Wide Analysis
-python# Group by ASN for network patterns
+```python # Group by ASN for network patterns
 config = HostSummaryConfig(
     group_by_asn=True,
     max_hosts_per_chunk=100  # Larger chunks for network analysis
 )
-
+```
 summarizer = JSONSummarizer(config=config)
 result = summarizer.process_json("network_scan.json")
 Performance
@@ -224,7 +229,7 @@ Large files (100-1000 hosts): ~2-5 minutes
 Note: Times depend on API response speed
 
 # Install dependencies
-conda env create -f environment.yml
+```bash conda env create -f environment.yml```
 
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
