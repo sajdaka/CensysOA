@@ -9,25 +9,24 @@ Prioritize by vulnerability severity
 Group by Autonomous System Number (ASN)
 Sequential processing
 
-
 Token Optimization: Reduces token usage by up to 70% through intelligent field selection
 Scalable Architecture: Handles files from a few hosts to thousands
 
-Security Analysis
+# Security Analysis
 
-Critical vulnerability detection (CVE tracking)
-Malware identification (including C2 servers)
-Threat intelligence integration
-Risk level assessment
-Service exposure analysis
-Certificate validation checks
+- Critical vulnerability detection (CVE tracking)
+- Malware identification (including C2 servers)
+- Threat intelligence integration
+- Risk level assessment
+- Service exposure analysis
+- Certificate validation checks
 
-User Interface
+# User Interface
 
-GUI Application: User-friendly tkinter interface
-Multi-tab Output: Executive summary, chunk details, and raw JSON views
-Real-time Statistics: Token usage, chunk count, processing metrics
-Export Functionality: Save reports as text or JSON
+- GUI Application: User-friendly tkinter interface
+- Multi-tab Output: Executive summary, chunk details, and raw JSON views
+- Real-time Statistics: Token usage, chunk count, processing metrics
+- Export Functionality: Save reports as text or JSON
 
 
 Prerequisites
@@ -45,15 +44,17 @@ cd security-json-summarizer
 ```
 Usage
 CLI Usage
-pythonfrom json_summarizer import JSONSummarizer, HostSummaryConfig
+```python from json_summarizer import JSONSummarizer, HostSummaryConfig```
 
 # Configure processing strategy
+```python
 config = HostSummaryConfig(
     prioritize_vulns=True,      # Group by vulnerability severity
     group_by_asn=False,         # Alternative: group by network
     max_hosts_per_chunk=50,     # Hosts per chunk
     max_tokens_per_chunk=3000   # Token limit per chunk
 )
+```
 
 # Initialize summarizer
 summarizer = JSONSummarizer(model="gpt-5", config=config)
@@ -70,17 +71,17 @@ print(f"Created {result['statistics']['chunks_created']} chunks")
 GUI Usage
 ```bash python gui_summarizer.py```
 
-Click Browse to select your JSON file
-Choose processing strategy from dropdown
-Click Process JSON to analyze
-View results in different tabs:
+- Click Browse to select your JSON file
+- Choose processing strategy from dropdown
+- Click Process JSON to analyze
+- View results in different tabs:
 
-Executive Summary: High-level security report
-Chunk Details: Processing breakdown
-Raw Output: Complete JSON response
+- Executive Summary: High-level security report
+- Chunk Details: Processing breakdown
+- Raw Output: Complete JSON response
 
 
-Click Export Summary to save results
+- Click Export Summary to save results
 
 Input Format
 The tool expects JSON files with the following structure:
@@ -152,10 +153,8 @@ The tool generates a comprehensive report containing:
   }
 }
 ```
-Configuration
-HostSummaryConfig Options
-ParameterTypeDefaultDescriptionprioritize_vulnsboolTrueGroup hosts by vulnerability severitygroup_by_asnboolFalseGroup hosts by Autonomous System Numbermax_hosts_per_chunkint50Maximum hosts per processing chunkmax_tokens_per_chunkint3000Token limit per chunk
-Processing Strategies
+
+# Processing Strategies
 
 Prioritize Vulnerabilities (Default)
 
@@ -214,24 +213,15 @@ config = HostSummaryConfig(
     group_by_asn=True,
     max_hosts_per_chunk=100  # Larger chunks for network analysis
 )
-```
+
 summarizer = JSONSummarizer(config=config)
 result = summarizer.process_json("network_scan.json")
-Performance
-Token Optimization Results
-Data SizeOriginal TokensOptimized TokensReductionSmall (3 hosts)4,5001,20073%Medium (50 hosts)75,00020,00073%Large (500 hosts)750,000200,00073%
-Processing Times
-
-Small files (<10 hosts): ~5 seconds
-Medium files (10-100 hosts): ~30 seconds
-Large files (100-1000 hosts): ~2-5 minutes
-
-Note: Times depend on API response speed
+```
 
 # Install dependencies
 ```bash conda env create -f environment.yml```
 
-License
+# License
 This project is licensed under the MIT License - see the LICENSE file for details.
 Acknowledgments
 
@@ -240,9 +230,9 @@ Tiktoken for token counting
 Security community for vulnerability databases
 
 
-Known Issues
+# Known Issues
 
-Large files (>1000 hosts) may require chunked API calls
-Token limits may require adjustment for very detailed vulnerability data
-GUI requires tkinter (included in most Python installations)
+- Large files (>1000 hosts) may require chunked API calls
+- Token limits may require adjustment for very detailed vulnerability data
+- GUI requires tkinter (included in most Python installations)
 
