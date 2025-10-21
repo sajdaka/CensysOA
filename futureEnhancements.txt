@@ -1,0 +1,17 @@
+If given more time to perfect and tune this project I would implement 
+the following optimizations:
+
+1. Retry logic to handle the API call if it failed or raised an error
+
+2. Input validation to ensure the json file is in the correct format and won't cause
+ issues down the programs stream of execution
+
+3. While not necessary for this data set parallel chunk processing would be a good
+want when dealing with larger data so that the program is not bottlenecked working
+on a singular chunk at a time
+
+4. I would also implement a logging system so the user is aware what step the program is on
+at all times (more useful for larger data files where more processing time maybe required)
+
+5. I would also implement rate limiting/queue management finally to compliment the 
+parallel batch processing, so that there is a fail safe if too many prompts are sent in a given time

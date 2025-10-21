@@ -1,6 +1,4 @@
 import json
-from turtle import dot
-
 import tiktoken
 from typing import List, Dict, Any, Generator, Optional
 import hashlib
@@ -25,8 +23,16 @@ class JSONSummarizer:
         self.config = config or HostSummaryConfig()
         self.encoding = tiktoken.encoding_for_model(model)
     
-        
+    #
     def preprocess_json(self, data: Dict) -> Dict:
+        '''
+        Gains initial stats about the json file used for analysis
+        
+        Args: 
+                data: the extracted dictionary from the json file
+        Returns:
+                A dictionary that contains the high level details about the dataset
+        '''
         
         metadata = {k: v for k, v in data.items() if k != 'hosts'}
         hosts = data.get('hosts', [])
@@ -53,6 +59,17 @@ class JSONSummarizer:
     
     
     def chunk_hosts(self, hosts: List[Dict]) -> List[Dict]:
+        
+        '''
+        Breaks the hosts of the data files into chunks that will be passed to the gpt API based on grouping strategy
+        
+        args:
+                hosts: list of all the hosts and their associated data
+                
+        returns:
+                A list of chunks grouped based on strategy and priority
+        
+        '''
         
         chunks = []
         
@@ -90,6 +107,18 @@ class JSONSummarizer:
     
     
     def _create_chunks(self, hosts: List[Dict], max_hosts: int, chunk_type: str) -> List[Dict]:
+        
+        '''
+        Builds the chunks from simplified and parsed data that the function recieves
+        
+        args:
+            hosts: list of hosts that fall under the same chunk_type
+            max_hosts: the absolute maximum amount of hosts a chunk should contain
+            chunk_type: differentiates the chunks based on grouping and priority
+            
+        returns:
+                A list of chunks grouped based on strategy and priority
+        '''
         
         chunks = []
         current_chunk = []
@@ -129,6 +158,16 @@ class JSONSummarizer:
     
     
     def _simplify_host_for_summary(self, host: Dict) -> Dict:
+        
+        '''
+        Builds the chunk's contents by retrieving the relevant data from the dataset and organizing it in a more robust manner
+        
+        args:
+            host: A singular host from the dataset that must be parsed and processed before appending to a chunk
+            
+        returns:
+            A singular host's contents in a chunk
+        '''
         
         simplified = {
             'ip': host.get('ip'),
@@ -218,6 +257,17 @@ class JSONSummarizer:
     
     def generate_chunk_prompt(self, chunk: Dict, analysis: Dict) -> str:
         
+        '''
+        Matches the correct prompt to chunk type for maximum retention of key information
+        
+        args:
+            chunk: the chunk of host's data that will be matched with a prompt
+            analysis: the high level summary of the entire dataset
+        
+        returns:
+            The ouput of the API call from the matched prompt 
+        '''
+        
         if chunk['type'] == 'critical':
             return f"""
             Analyze these HIGH-PRIORITY hosts with vulnerabilities or threat indicators:
@@ -274,6 +324,17 @@ class JSONSummarizer:
             
     def create_final_summary(self, chunk_summaries: List[Dict], analysis: Dict) -> str:
         
+        '''
+        Generates the final summary of all the data that will be used as the main output
+        
+        args:
+            chunk_summaries: a list of all summaries and metadata from previous chunk prompts
+            analysis: the high level summary of the entire dataset
+        
+        returns:
+            The final API prompt output which outputs a summary of the entire dataset
+        '''
+        
         critical_summaries = [s for s in chunk_summaries if s.get('type') == 'critical']
         other_summaries = [s for s in chunk_summaries if s.get('type') != 'critical']
         
@@ -306,6 +367,15 @@ class JSONSummarizer:
         return self.call_gpt_api(prompt)
     
     def process_json(self, file_path: str) -> Dict:
+        '''
+        The main entry and running function of the code, orchestrates all the other function calls and maintains the outputted data
+        
+        args:
+            file_path: The file path to the dataset the user wishes to summarize
+            
+        returns:
+            A dictionary of all relevant information from the programs running time
+        '''
         
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -342,6 +412,15 @@ class JSONSummarizer:
         }
         
     def call_gpt_api(self, prompt: str) -> str:
+        '''
+        Code to set up an API call, push the prompt and recieve a response from an OpenAI LLM
+        
+        args:
+            prompt: The input towards the LLM
+        
+        returns:
+            The LLM's generated response
+        '''
         from openai import OpenAI
         load_dotenv(dotenv_path="env/.env")
         client = OpenAI()

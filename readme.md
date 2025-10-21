@@ -29,21 +29,21 @@ Scalable Architecture: Handles files from a few hosts to thousands
 - Export Functionality: Save reports as text or JSON
 
 
-Prerequisites
+**Prerequisites**
 
-Python 3.8 or higher
-OpenAI API key (for GPT integration)
+- Python 3.8 or higher
+- OpenAI API key (for GPT integration)
 
-Install Dependencies
+**Install Dependencies**
 ```bash conda env create -f environment.yml```
-For GUI support:
+- For GUI support:
 ```bash pip install tkinter  # Usually comes with Python```
-Clone Repository
+- Clone Repository
 ```bash git clone https://github.com/yourusername/security-json-summarizer.git
 cd security-json-summarizer
 ```
-Usage
-CLI Usage
+
+**CLI Usage**
 ```python from json_summarizer import JSONSummarizer, HostSummaryConfig```
 
 # Configure processing strategy
@@ -129,7 +129,7 @@ The tool expects JSON files with the following structure:
   ]
 }
 ```
-📊 Output Format
+Output Format
 The tool generates a comprehensive report containing:
 ```json{
   "executive_summary": "Security analysis summary...",
@@ -158,25 +158,25 @@ The tool generates a comprehensive report containing:
 
 Prioritize Vulnerabilities (Default)
 
-Critical hosts with malware: 20 hosts/chunk
-High-risk hosts: 30 hosts/chunk
-Normal hosts: 50 hosts/chunk
+- Critical hosts with malware: 20 hosts/chunk
+- High-risk hosts: 30 hosts/chunk
+- Normal hosts: 50 hosts/chunk
 
 
 Group by ASN
 
-Analyzes hosts within same network
-Useful for network-wide security assessment
+- Analyzes hosts within same network
+- Useful for network-wide security assessment
 
 
 Sequential
 
-Processes hosts in order
-Best for small datasets
+- Processes hosts in order
+- Best for small datasets
 
 
 
-API Setup
+# API Setup
 OpenAI Configuration
 
 Get your API key from OpenAI Platform
@@ -198,8 +198,9 @@ Or use environment variable:
 
 ```bash export OPENAI_API_KEY="your-api-key-here" ```
 Examples
+
 Example 1: Analyzing Critical Infrastructure
-python# Focus on critical vulnerabilities
+```python # Focus on critical vulnerabilities
 config = HostSummaryConfig(
     prioritize_vulns=True,
     max_hosts_per_chunk=20  # Smaller chunks for detailed analysis
@@ -207,6 +208,7 @@ config = HostSummaryConfig(
 
 summarizer = JSONSummarizer(config=config)
 result = summarizer.process_json("critical_infrastructure.json")
+```
 Example 2: Network-Wide Analysis
 ```python # Group by ASN for network patterns
 config = HostSummaryConfig(
@@ -225,9 +227,9 @@ result = summarizer.process_json("network_scan.json")
 This project is licensed under the MIT License - see the LICENSE file for details.
 Acknowledgments
 
-OpenAI for GPT API
-Tiktoken for token counting
-Security community for vulnerability databases
+- OpenAI for GPT API
+- Tiktoken for token counting
+- Security community for vulnerability databases
 
 
 # Known Issues
