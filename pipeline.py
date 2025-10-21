@@ -18,7 +18,7 @@ class HostSummaryConfig:
 
 class JSONSummarizer:
     
-    def __init__(self, model="gpt-5", config: Optional[HostSummaryConfig] = None):
+    def __init__(self, model="gpt-4", config: Optional[HostSummaryConfig] = None):
         self.model = model
         self.config = config or HostSummaryConfig()
         self.encoding = tiktoken.encoding_for_model(model)

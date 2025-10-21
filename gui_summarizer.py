@@ -4,8 +4,8 @@ import json
 import threading
 from pathlib import Path
 
-# Import your existing JSONSummarizer class
-from pipeline import JSONSummarizer, HostSummaryConfig  # Update this import
+
+from pipeline import JSONSummarizer, HostSummaryConfig 
 
 class JSONSummarizerGUI:
     def __init__(self, root):
